@@ -1,41 +1,40 @@
 # PageRank: Markov Chains and GPU Computing
 
-Experiments accompanying Marco Mazzocco's bachelor's thesis at Sapienza University of Rome (2026).
+Bachelor's thesis in Computer and Control Engineering, Sapienza University of Rome (2026), with the code and experiments behind it.
 
-[Website](https://mazzocco51.github.io) · [Contact](mailto:mazzocco.dev@gmail.com)
+📄 **[Read the thesis (PDF)](thesis/PageRank_Markov_Chains_and_GPU_Computing.pdf)** · 📓 **[Open the notebook](PageRank_Experiments.ipynb)** · [Website](https://mazzocco51.github.io) · [Contact](mailto:mazzocco.dev@gmail.com)
 
-Open **[PageRank_Experiments.ipynb](PageRank_Experiments.ipynb)**. It contains all source code for CPU/GPU power iteration, endpoint Monte Carlo, CUDA sparse kernels, convergence experiments and Flickr contact recommendation. No separate research scripts are needed.
+## What this is about
+
+PageRank ranks the nodes of a graph by the long-run behaviour of a random walk on it, which makes it the stationary distribution of a Markov chain. The thesis studies this from both the mathematical and the computational side: why the iteration converges, and how to compute it fast on large sparse graphs, on CPU and on GPU.
+
+## What the notebook covers
+
+| Section | Dataset | What it does |
+|---|---|---|
+| Power iteration, CPU vs GPU | web-Google | Convergence behaviour and run times of the classic iterative method |
+| Endpoint Monte Carlo | twitter_combined | Estimates PageRank with random walks and measures accuracy against the exact values |
+| Sparse kernels at scale | GAP-twitter | Graph preparation, power iteration and custom CUDA sparse matrix-vector kernels |
+| Contact recommendation | Flickr | Personalised PageRank to predict future contacts, evaluated with a paired bootstrap |
 
 ## Quick start
 
-1. Open the notebook in Jupyter or upload it to Google Colab.
-2. Install the CPU dependencies if needed (`pip install -r requirements.txt`), or use the optional installation cell.
-3. Run all cells with the default flags for historical result summaries and a small CPU check. No dataset download or long GPU job starts by default.
-4. To reproduce an experiment, enable its flag in Section 1 and run the notebook in order. Use an NVIDIA GPU and a compatible CuPy installation for GPU sections. GAP-twitter requires Linux, gcc, tar, wget and substantial disk/RAM/VRAM. Full Flickr evaluation may take hours.
+1. Open `PageRank_Experiments.ipynb` in Jupyter or upload it to Google Colab.
+2. Install the dependencies: `pip install -r requirements.txt`. For the GPU sections, also install the CuPy build that matches your CUDA version.
+3. Run all cells. With the default settings the notebook only shows the recorded results and runs a small CPU check. It downloads nothing and starts no long GPU job.
+4. To rerun an experiment, turn on its flag in Section 1 and run the notebook in order.
 
-The notebook writes included scripts to `_pagerank_runtime/` and new data/results to `pagerank_runs/`. Both directories are ignored by Git. Cached research outputs have been removed; the explicitly labelled historical summaries remain embedded. Do not upload downloaded datasets or generated binary arrays.
+Some experiments are heavy. The GAP-twitter part needs Linux, an NVIDIA GPU and a lot of disk, RAM and GPU memory. The full Flickr evaluation can take hours.
 
 ## Repository contents
 
-- `PageRank_Experiments.ipynb`: the single, self-contained research notebook.
-- `requirements.txt`: CPU/Jupyter dependencies; install CuPy separately for your CUDA runtime.
-- `.gitignore`: excludes generated scripts, datasets, outputs and notebook checkpoints.
+- `thesis/PageRank_Markov_Chains_and_GPU_Computing.pdf`: the full thesis.
+- `PageRank_Experiments.ipynb`: a single, self-contained notebook with all the code (CPU/GPU power iteration, Monte Carlo, CUDA kernels, the Flickr evaluation).
+- `requirements.txt`: CPU and Jupyter dependencies.
+- `.gitignore`: keeps datasets and generated outputs out of the repository.
 
-Recorded results and rerun outputs are separate. The consolidation preserves numerical settings and adds path/setup orchestration; it does not claim that original GPU experiments were rerun during packaging. The notebook documents source provenance and optional exploratory experiments.
+When run, the notebook writes its helper scripts to `_pagerank_runtime/` and new data and results to `pagerank_runs/`. Both folders are ignored by Git.
 
-For a new, empty GitHub repository, initialise this folder and push its contents. Replace `YOUR_REPOSITORY_URL` with the repository URL:
+## A note on the results
 
-```bash
-git init
-git add README.md requirements.txt .gitignore PageRank_Experiments.ipynb
-git commit -m "Add PageRank thesis experiments"
-git branch -M main
-git remote add origin YOUR_REPOSITORY_URL
-git push -u origin main
-```
-
-For an existing repository, copy these four files into it and use its normal commit/push workflow.
-
-## Packaging validation
-
-All default code cells were executed in order in a clean IPython namespace on Python 3.12. The small CPU power-iteration and Monte Carlo checks passed. The baseline and exploratory Flickr bootstraps were rerun against the archived 5,000-user result files: estimates and confidence intervals matched to an absolute tolerance of 1e-10. Every embedded Python script was syntax-checked. Full GPU experiments and large dataset downloads were not rerun during consolidation.
+The results shown in the notebook are the ones recorded for the thesis and are clearly labelled as such. When the code was gathered into this notebook, the default cells and the small CPU checks were rerun on Python 3.12, and the Flickr statistics were recomputed from the saved results and matched. The full GPU experiments were not rerun.
