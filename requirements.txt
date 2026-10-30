@@ -1,0 +1,8 @@
+numpy
+scipy
+pandas
+matplotlib
+requests
+ipython
+jupyterlab
+# Install CuPy separately for your CUDA runtime.
